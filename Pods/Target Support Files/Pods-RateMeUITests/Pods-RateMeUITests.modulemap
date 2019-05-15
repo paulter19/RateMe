@@ -1,0 +1,6 @@
+framework module Pods_RateMeUITests {
+  umbrella header "Pods-RateMeUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
