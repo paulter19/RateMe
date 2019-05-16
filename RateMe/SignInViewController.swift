@@ -16,7 +16,7 @@ class SignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
     }
     
@@ -46,6 +46,15 @@ class SignInViewController: UIViewController {
             
         }
         
+    }
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignInViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        print("dismiss keyboard")
+        view.endEditing(true)
     }
     
     /*

@@ -12,6 +12,7 @@ import FirebaseAuth
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var skipButton: UIButton!
     @IBOutlet weak var ratedEveryoneMessage: UITextView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var slider: UISlider!
@@ -46,9 +47,10 @@ class ViewController: UIViewController {
            self.slider.isHidden = true
             self.rateButton.isHidden = true
             self.ratedEveryoneMessage.isHidden = false
-            self.imageView.image = nil
+            //self.imageView.image = nil
             self.rateLabel.isHidden = true
             self.usernameLabel.isHidden = true
+            self.skipButton.isHidden = true
             
             
         }else{
@@ -66,6 +68,8 @@ class ViewController: UIViewController {
             self.rateButton.isHidden = false
             self.rateLabel.isHidden = false
             self.usernameLabel.isHidden = false
+            self.skipButton.isHidden = false
+
             
             self.originalFrame = self.imageView.frame
 
@@ -78,6 +82,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        if(self.imageView == nil || self.rateButton == nil){
+            return
+        }
         self.imageView.layer.cornerRadius = 8
         self.imageView.clipsToBounds = true
         
@@ -190,6 +197,27 @@ class ViewController: UIViewController {
         }).resume()
     }
     
+    @IBAction func skipPressed(_ sender: Any) {
+        if(self.myInfo.getRates() == nil || self.myInfo.getRates().count == 0){
+            let justRatedUsername = self.peopleToRate[count].getUsername()
+            let rates = [justRatedUsername]
+        }else{
+            let justRatedUsername = self.peopleToRate[count].getUsername()
+            var rates = self.myInfo.getRates()
+            rates.append(justRatedUsername)
+            Database.database().reference().child("Users").child((Auth.auth().currentUser?.uid)!).updateChildValues(["peopleIRated":rates])
+            
+            
+            
+        }
+        
+        let home = self.storyboard?.instantiateViewController(withIdentifier: "Home")
+        self.present(home!, animated: false, completion: nil)
+        
+        
+    }
+    
+    
     @IBAction func slideChanged(_ sender: Any) {
         
         let index = (Int)(slider!.value + 0.5);
@@ -237,11 +265,6 @@ class ViewController: UIViewController {
                 
                 
                 Database.database().reference().child("Users").child(person.getUid()).updateChildValues(["timesRated":timeRated,"rateTotal":rateTotal])
-                
-                
-                
-                
-                
             }
         }
         
@@ -279,11 +302,17 @@ class ViewController: UIViewController {
     
    func nextPic(){
     print("next pic")
+    if(self.peopleToRate == nil || self.peopleToRate.count == 0){
+        return
+    }
+    
+    
         if(count == self.peopleToRate.count - 1){
             count = 0
         }else{
             count = count + 1
         }
+    
         let url = self.peopleToRate[count].getPictures()[0]
         let person = self.peopleToRate[count]
         loadImage(urlString: url)

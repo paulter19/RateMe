@@ -50,6 +50,9 @@ class User{
     func getPictures() -> [String] {
         return self.pictures
     }
+    func getEmail() -> String {
+        return self.email
+    }
     func getUsername() -> String {
         return self.username
     }

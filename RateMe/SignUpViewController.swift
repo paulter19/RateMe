@@ -22,8 +22,10 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var signUpButton: UIButton!
     var profileUpload = UIImage(named: "default")
     var changedProfilePic = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
 
         
         // Do any additional setup after loading the view.
@@ -54,28 +56,31 @@ class SignUpViewController: UIViewController {
         
         
         Auth.auth().createUser(withEmail: emailTextfield.text!, password: passwordTextfield.text!) { (user, error) in
+            self.signUpButton.isEnabled = false
+
             if(error == nil){
                 
                 let uid = user?.user.uid
                 let randomString = UUID().uuidString
 
+
                 let storRef = Storage.storage().reference().child("ProfilePics").child(uid!).child(randomString)
+
                 
                 if let uploadData = self.profileUpload?.jpegData(compressionQuality: 0.4){
                     storRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                        self.signUpButton.isEnabled = false
                         storRef.downloadURL(completion: { (url, error) in
                             if(error != nil){
                                 return
                             }
                             
-                            let username = self.usernameTextfield.text
-                            let email = self.emailTextfield.text?.uppercased()
-                            let dref = Database.database().reference().child("Users").child((user?.user.uid)!).setValue(["username":username,"email":email,"userID":uid,"Pictures":[url?.absoluteString],"rateTotal":10,"timesRated":1])
+                            let username = self.usernameTextfield.text?.lowercased()
+                            let email = self.emailTextfield.text?.lowercased()
+                            let dref = Database.database().reference().child("Users").child((user?.user.uid)!).setValue(["username":username,"email":email,"userID":uid,"Pictures":[url?.absoluteString],"rateTotal":10,"timesRated":1,"peopleIRated":[username]])
                             
-                            
-                            let home = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! ViewController
-                            self.present(home, animated: true, completion: nil)
+                            print("going to that next screen")
+                            let next = self.storyboard?.instantiateViewController(withIdentifier: "NextSignUp") as! NextSignUpViewController
+                            self.present(next, animated: false, completion: nil)
                             
                             
                             
@@ -98,7 +103,16 @@ class SignUpViewController: UIViewController {
         }
         
     }
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignUpViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
     
+    @objc func dismissKeyboard() {
+        print("dismiss keyboard")
+        view.endEditing(true)
+        
+    }
     @IBAction func chooseProfilePic(_ sender: Any) {
         let picker = UIImagePickerController()
         picker.delegate = self
