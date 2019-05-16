@@ -18,12 +18,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var rateLabel: UILabel!
     @IBOutlet weak var rateButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
+    var originalFrame:CGRect?
     var count = 0
     var myInfo = User()
     var peopleToRate = [User]()
     
-    //var images = [UIImage(named: "ariana.jpeg"),UIImage(named: "beyonce.jpeg"),UIImage(named: "cassie.jpeg"),UIImage(named: "chantel.jpeg"),UIImage(named: "kim.jpeg"),UIImage(named: "lauren.jpeg"),UIImage(named: "rihanna.jpeg")]
-    
+   
     override func viewWillAppear(_ animated: Bool) {
         if(Auth.auth().currentUser != nil){
         getMyInfo()
@@ -56,16 +56,18 @@ class ViewController: UIViewController {
             let person = self.peopleToRate[0]
             let pictures = person.getPictures()
             let firstPicUrl = pictures[0]
-            let rateTotal  = person.getTotalRate()
-            let timesRated = person.getTimesRated()
+            let rateTotal  = Double(person.getTotalRate())
+            let timesRated = Double(person.getTimesRated())
             let averageRate = rateTotal/timesRated
             self.loadImage(urlString: firstPicUrl)
-            self.usernameLabel.text = "\(person.getUsername())   Average Rate: \(averageRate)"
+            self.usernameLabel.text = "\(person.getUsername())   Average Rate: \(String(format: "%.2f", averageRate))"
             self.ratedEveryoneMessage.isHidden = true
             self.slider.isHidden = false
             self.rateButton.isHidden = false
             self.rateLabel.isHidden = false
             self.usernameLabel.isHidden = false
+            
+            self.originalFrame = self.imageView.frame
 
 
             
@@ -82,8 +84,8 @@ class ViewController: UIViewController {
         self.rateButton.layer.cornerRadius = 8
         self.rateButton.clipsToBounds = true
         
-        self.rateLabel.layer.cornerRadius = self.rateLabel.frame.width / 2
-        self.rateLabel.clipsToBounds = true
+       // self.rateLabel.layer.cornerRadius = self.rateLabel.frame.width / 2
+        //self.rateLabel.clipsToBounds = true
         
         
     
@@ -228,15 +230,11 @@ class ViewController: UIViewController {
             if let dictionary = snapshot.value as? [String:Any]{
                 timeRated = dictionary["timesRated"] as! Int
                 rateTotal = dictionary["rateTotal"] as! Int
-                print("first")
-                print("\(timeRated)")
-                print("\(rateTotal)")
+                
                 
                 timeRated = timeRated + 1
                 rateTotal = rateTotal + amount
-                print("then")
-                print("\(timeRated)")
-                print("\(rateTotal)")
+                
                 
                 Database.database().reference().child("Users").child(person.getUid()).updateChildValues(["timesRated":timeRated,"rateTotal":rateTotal])
                 
@@ -256,7 +254,7 @@ class ViewController: UIViewController {
         let point = sender.translation(in: view)
         view.center = CGPoint(x: view.center.x + point.x, y: view.center.y)
         
-        if(view.center.x < 0 - self.view.frame.width){
+        if(view.center.x < 0 - self.view.center.x){
             view.isHidden = true
 
             nextPic()
@@ -268,7 +266,11 @@ class ViewController: UIViewController {
         
         if(sender.state == UIGestureRecognizer.State.ended){
             UIView.animate(withDuration: 0.7) {
-                view.center = self.view.center
+                if(self.originalFrame != nil){
+                    view.frame = self.originalFrame!
+                }else{
+                    view.center = self.view.center
+                }
                 view.isHidden = false
             }
         }
@@ -285,8 +287,8 @@ class ViewController: UIViewController {
         let url = self.peopleToRate[count].getPictures()[0]
         let person = self.peopleToRate[count]
         loadImage(urlString: url)
-        let averageRate = Double(person.getTotalRate() / person.getTimesRated())
-        self.usernameLabel.text = "\(self.peopleToRate[count].getUsername())   Average Rate: \(averageRate)"
+        let averageRate = Double(person.getTotalRate()) / Double(person.getTimesRated())
+        self.usernameLabel.text = "\(self.peopleToRate[count].getUsername())   Average Rate: \(String(format: "%.2f", averageRate))"
         self.imageView.center = self.view.center
     }
     func previousPic(){
