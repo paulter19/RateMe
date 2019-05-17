@@ -87,7 +87,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qGT-A3-xEm">
-                                <rect key="frame" x="16" y="44" width="34" height="30"/>
+                                <rect key="frame" x="16" y="28" width="34" height="30"/>
                                 <state key="normal" title="back">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -99,7 +99,7 @@
                                 <rect key="frame" x="51" y="58" width="264" height="269"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z3g-IP-4yq">
-                                <rect key="frame" x="304" y="44" width="44" height="30"/>
+                                <rect key="frame" x="304" y="28" width="44" height="30"/>
                                 <state key="normal" title="logout">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -173,7 +173,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="vAI-Sx-cR4" firstAttribute="trailing" secondItem="Z3g-IP-4yq" secondAttribute="trailing" constant="27" id="3GS-0j-KBe"/>
-                            <constraint firstItem="qGT-A3-xEm" firstAttribute="top" secondItem="vAI-Sx-cR4" secondAttribute="top" id="3nb-WN-tyl"/>
+                            <constraint firstItem="qGT-A3-xEm" firstAttribute="top" secondItem="vAI-Sx-cR4" secondAttribute="top" constant="-16" id="3nb-WN-tyl"/>
                             <constraint firstItem="vAI-Sx-cR4" firstAttribute="bottom" secondItem="e54-Gs-KLd" secondAttribute="bottom" constant="225" id="5E6-eO-BUg"/>
                             <constraint firstItem="qGT-A3-xEm" firstAttribute="baseline" secondItem="Z3g-IP-4yq" secondAttribute="baseline" id="79S-f8-hf6"/>
                             <constraint firstItem="ifK-ew-i2u" firstAttribute="top" secondItem="vIN-3S-WCp" secondAttribute="bottom" constant="8" id="8QN-7y-j5I"/>

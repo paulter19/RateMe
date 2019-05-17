@@ -262,9 +262,21 @@ class ViewController: UIViewController {
                 
                 timeRated = timeRated + 1
                 rateTotal = rateTotal + amount
+            
+                var ratedBy = [String:Any]()
+              
+                if(dictionary["ratedBy"] != nil){
+                ratedBy = dictionary["ratedBy"] as! [String:Any]
+                    ratedBy.updateValue(amount, forKey: self.myInfo.getUsername())
+                
+               }else{
+                
+                ratedBy.updateValue(amount, forKey: self.myInfo.getUsername())
+               
+                }
                 
                 
-                Database.database().reference().child("Users").child(person.getUid()).updateChildValues(["timesRated":timeRated,"rateTotal":rateTotal])
+                Database.database().reference().child("Users").child(person.getUid()).updateChildValues(["timesRated":timeRated,"rateTotal":rateTotal,"ratedBy":ratedBy])
             }
         }
         

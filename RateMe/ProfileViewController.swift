@@ -180,8 +180,20 @@ class ProfileViewController: UIViewController {
                 timeRated = timeRated + 1
                 rateTotal = rateTotal + amount
                 
+                var ratedBy = [String:Any]()
                 
-                Database.database().reference().child("Users").child(person.getUid()).updateChildValues(["timesRated":timeRated,"rateTotal":rateTotal])
+                if(dictionary["ratedBy"] != nil){
+                    ratedBy = dictionary["ratedBy"] as! [String:Any]
+                    ratedBy.updateValue(amount, forKey: self.myInfo.getUsername())
+                    
+                }else{
+                    
+                    ratedBy.updateValue(amount, forKey: self.myInfo.getUsername())
+                    
+                }
+                
+                
+                Database.database().reference().child("Users").child(person.getUid()).updateChildValues(["timesRated":timeRated,"rateTotal":rateTotal,"ratedBy":ratedBy])
             }
         }
         
