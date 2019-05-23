@@ -9,8 +9,11 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import GoogleMobileAds
+import FirebaseStorage
 
-class ProfileViewController: UIViewController {
+
+class ProfileViewController: UIViewController,GADBannerViewDelegate {
 
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var rateButton: UIButton!
@@ -18,6 +21,10 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var usernameTextLabel: UILabel!
     @IBOutlet weak var averageRateLabel: UILabel!
     @IBOutlet weak var profilePic: UIImageView!
+    
+    @IBOutlet weak var settingsButton: UIButton!
+    
+    
     var cameFromSearch = false
     var myInfo = User()
     var searchInfo = User()
@@ -26,6 +33,7 @@ class ProfileViewController: UIViewController {
        print("view will")
         self.profilePic.layer.cornerRadius = 8
         self.profilePic.clipsToBounds = true
+        
         if(cameFromSearch){
             sleep(1)
 
@@ -48,11 +56,13 @@ class ProfileViewController: UIViewController {
                 let total = userDictionary["rateTotal"] as! Double
                 let times = userDictionary["timesRated"] as! Double
                 let averageRate = total / times
+                let visibility = userDictionary["visibility"] as! String
                 self.averageRateLabel.text = "Average Rate: \(String(format: "%.2f", averageRate))"
                 self.usernameTextLabel.text = username
                 
-                
-                self.myInfo = User(username: username, email: email, uid: uid, pics: pictures)
+                var user = User(username: username, email: email, uid: uid, pics: pictures)
+                user.setVisibility(visibility: visibility)
+                self.myInfo = user
                 
                 if(userDictionary["peopleIRated"] != nil){
                     let irated = userDictionary["peopleIRated"] as! [String]
@@ -63,6 +73,15 @@ class ProfileViewController: UIViewController {
             }
             
         }, withCancel: nil)
+        
+        let view = GADBannerView()
+        view.frame = CGRect(x: 0, y: self.view.frame.maxY - 50, width: 320, height: 50)
+        view.delegate = self
+        view.rootViewController = self
+        view.adUnitID = "ca-app-pub-1666211014421581/8054549109"
+        view.load(GADRequest())
+        self.view.addSubview(view)
+
         
     }
     
@@ -88,6 +107,7 @@ class ProfileViewController: UIViewController {
         self.usernameTextLabel.text = nil
         self.averageRateLabel.text = ""
         self.profilePic.image = nil
+        
 
         loadImage(urlString: searchInfo.getPictures()[0])
         print("username should be \(searchInfo.getUsername())")
@@ -101,13 +121,23 @@ class ProfileViewController: UIViewController {
             let alert = UIAlertController(title: "Already Rated", message: "", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .destructive, handler: nil))
             self.present(alert, animated: false, completion: nil)
+        }else if(self.searchInfo.getVisibility() == "off"){
+            let alert = UIAlertController(title: "This user turn off their abilility to be rated", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .destructive, handler: nil))
+            self.present(alert, animated: false, completion: nil)
+            
+            
+        }else if(self.myInfo.getUsername() == self.searchInfo.getUsername()){
+            print("this is your profile")
+            
+            
         }else{
             self.slider.isHidden = false
             self.rateLabel.isHidden = false
             self.rateButton.isHidden = false
         }
         
-        
+        self.settingsButton.isHidden = true
 
     }
     
@@ -200,6 +230,91 @@ class ProfileViewController: UIViewController {
         
         
     }
+    
+    
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("adViewDidReceiveAd")
+    }
+    
+    /// Tells the delegate an ad request failed.
+    func adView(_ bannerView: GADBannerView,
+                didFailToReceiveAdWithError error: GADRequestError) {
+        print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+    
+    /// Tells the delegate that a full-screen view will be presented in response
+    /// to the user clicking on an ad.
+    func adViewWillPresentScreen(_ bannerView: GADBannerView) {
+        print("adViewWillPresentScreen")
+    }
+    
+    /// Tells the delegate that the full-screen view will be dismissed.
+    func adViewWillDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewWillDismissScreen")
+    }
+    
+    /// Tells the delegate that the full-screen view has been dismissed.
+    func adViewDidDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewDidDismissScreen")
+    }
+    
+    /// Tells the delegate that a user click will open another app (such as
+    /// the App Store), backgrounding the current app.
+    func adViewWillLeaveApplication(_ bannerView: GADBannerView) {
+        print("adViewWillLeaveApplication")
+    }
+    @IBAction func settingsPressed(_ sender: Any) {
+        let alert = UIAlertController(title: "Settings", message: "", preferredStyle: .alert)
+        
+        var title = ""
+        if(self.myInfo.getVisibility() == "off"){
+            title = "Turn visibility on"
+            print("just turned on")
+        }else{
+            title = "Turn visibility off"
+            print("just turned off")
+
+        }
+        
+        print("visibility is \(self.myInfo.getVisibility())")
+        print("title is \(title)")
+        
+        alert.addAction(UIAlertAction(title: title, style: .default, handler: { (action) in
+            if(self.myInfo.getVisibility() == "off"){
+                Database.database().reference().child("Users").child(self.myInfo.getUid()).updateChildValues(["visibility":"on"])
+            }else{
+                Database.database().reference().child("Users").child(self.myInfo.getUid()).updateChildValues(["visibility":"off"])
+
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Change profile picture", style: .default, handler: { (action) in
+            let picker = UIImagePickerController()
+            picker.delegate = self
+            picker.allowsEditing = false
+           self.present(picker, animated: true, completion: nil)
+        }))
+        
+        
+    
+        alert.addAction(UIAlertAction(title: "Logout", style: .default, handler: { (action) in
+            do{
+                try Auth.auth().signOut()
+                let login = self.storyboard?.instantiateViewController(withIdentifier: "SignIn") as! SignInViewController
+                self.present(login, animated: false, completion: nil
+                )
+            }catch{
+                
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) in
+            print("cancel pressed")
+        }))
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    
     /*
     // MARK: - Navigation
 
@@ -210,4 +325,65 @@ class ProfileViewController: UIViewController {
     }
     */
 
+}
+extension ProfileViewController:UINavigationControllerDelegate, UIImagePickerControllerDelegate{
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // Local variable inserted by Swift 4.2 migrator.
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+        
+        if let originalImage = info["UIImagePickerControllerEditedImage"]{
+            print("edited image")
+            self.profilePic.image = originalImage as? UIImage
+            uploadImage(image: originalImage as! UIImage)
+            
+            
+        }
+        else if let originalImage = info["UIImagePickerControllerOriginalImage"]  {
+            print("original image")
+            self.profilePic.image = originalImage as? UIImage
+            uploadImage(image: originalImage as! UIImage)
+            
+
+            
+        }
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        print("dismissed image picker")
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func uploadImage(image: UIImage){
+        let storRef = Storage.storage().reference().child("ProfilePics").child(self.myInfo.getUid()).child("profilePic")
+        if let uploadData = image.jpegData(compressionQuality: 0.6){
+            storRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                storRef.downloadURL(completion: { (url, error) in
+                    if(error != nil){
+                        self.dismiss(animated: true, completion: nil)
+
+                        return
+                    }
+                    
+                    Database.database().reference().child("Users").child(self.myInfo.getUid()).updateChildValues(["Pictures":[url?.absoluteString]])
+                    
+                    self.dismiss(animated: true, completion: nil)
+
+                    
+                    
+                    
+                    
+                })
+            })
+        }
+
+    }
+  
+    
+    
+    
+    
+    
+    fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+        return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+    }
 }

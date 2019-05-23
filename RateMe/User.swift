@@ -15,6 +15,7 @@ class User{
     private var peopleIRated = [""]
     private var rateTotal = 10
     private var timesRated = 1
+    private var visibility = "on"
 
 
     
@@ -65,6 +66,13 @@ class User{
     func getTotalRate() -> Int {
         return self.rateTotal
     }
+    func getVisibility() -> String{
+        return self.visibility
+    }
+    func setVisibility(visibility: String){
+        self.visibility = visibility
+    }
+
     func setTimesRated(amount:Int){
         self.timesRated = amount
     }

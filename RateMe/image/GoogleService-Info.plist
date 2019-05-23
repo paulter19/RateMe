@@ -32,5 +32,7 @@
 	<string>1:168467956646:ios:4ab8909e23da89ab</string>
 	<key>DATABASE_URL</key>
 	<string>https://rateme-64431.firebaseio.com</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-1666211014421581~7788979312</string>
 </dict>
 </plist>

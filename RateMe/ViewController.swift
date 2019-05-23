@@ -9,8 +9,9 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import GoogleMobileAds
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,GADBannerViewDelegate {
 
     @IBOutlet weak var skipButton: UIButton!
     @IBOutlet weak var ratedEveryoneMessage: UITextView!
@@ -29,6 +30,17 @@ class ViewController: UIViewController {
         if(Auth.auth().currentUser != nil){
         getMyInfo()
         getUsers()
+            let view = GADBannerView()
+            view.frame = CGRect(x: 0, y: self.view.frame.maxY - 50, width: 320, height: 50)
+
+            view.delegate = self
+            view.rootViewController = self
+            view.adUnitID = "ca-app-pub-1666211014421581/8054549109"
+            view.load(GADRequest())
+
+            self.view.addSubview(view)
+
+            
         }else{
             let signin = (self.storyboard?.instantiateViewController(withIdentifier: "SignIn"))!
             self.present(signin, animated: false, completion: nil)
@@ -138,6 +150,8 @@ class ViewController: UIViewController {
                     let uid = userDictionary["userID"] as! String
                     let timesRated = userDictionary["timesRated"] as! Int
                     let totalRate = userDictionary["rateTotal"] as! Int
+                    let visibility = userDictionary["visibility"] as! String
+                    
 
 
                     print(username)
@@ -145,12 +159,17 @@ class ViewController: UIViewController {
                     if(self.myInfo.getRates().contains(username)){
                         print("skip already rated")
                         
+                    }
+                    else if(visibility == "off" ){
+                        print("skip they dont want to be visible")
+                        
                     }else{
                         print("not yet rated")
                        let theUser =  User(username: username, email: email, uid: uid, pics: pictures)
                         
                         theUser.setTotalRate(amount: totalRate)
                         theUser.setTimesRated(amount: timesRated)
+                        theUser.setVisibility(visibility: visibility)
                         
                         if(userDictionary["peopleIRated"] != nil){
                             let irated = userDictionary["peopleIRated"] as! [String]
@@ -344,6 +363,38 @@ class ViewController: UIViewController {
 
         self.usernameLabel.text = self.peopleToRate[count].getUsername()
         self.imageView.center = self.view.center
+    }
+    
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("adViewDidReceiveAd")
+    }
+    
+    /// Tells the delegate an ad request failed.
+    func adView(_ bannerView: GADBannerView,
+                didFailToReceiveAdWithError error: GADRequestError) {
+        print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+    
+    /// Tells the delegate that a full-screen view will be presented in response
+    /// to the user clicking on an ad.
+    func adViewWillPresentScreen(_ bannerView: GADBannerView) {
+        print("adViewWillPresentScreen")
+    }
+    
+    /// Tells the delegate that the full-screen view will be dismissed.
+    func adViewWillDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewWillDismissScreen")
+    }
+    
+    /// Tells the delegate that the full-screen view has been dismissed.
+    func adViewDidDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewDidDismissScreen")
+    }
+    
+    /// Tells the delegate that a user click will open another app (such as
+    /// the App Store), backgrounding the current app.
+    func adViewWillLeaveApplication(_ bannerView: GADBannerView) {
+        print("adViewWillLeaveApplication")
     }
     
     

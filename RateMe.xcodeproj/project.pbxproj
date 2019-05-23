@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		61406052228E53FE00DE319F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 61406051228E53FE00DE319F /* GoogleService-Info.plist */; };
+		61406056228E72F800DE319F /* ratemelogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 61406055228E72F800DE319F /* ratemelogo.png */; };
 		61D7C4F4228CD82600B96449 /* SearchUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D7C4F3228CD82600B96449 /* SearchUser.swift */; };
 		61D7C4F6228CF7CB00B96449 /* NextSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D7C4F5228CF7CB00B96449 /* NextSignUpViewController.swift */; };
 		61FFF1D32288CD720034A883 /* user-silhouette.png in Resources */ = {isa = PBXBuildFile; fileRef = 61FFF1D22288CD720034A883 /* user-silhouette.png */; };
@@ -28,7 +30,6 @@
 		E3C480FD2283982A007B175B /* beyonce.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E3C480F622839829007B175B /* beyonce.jpeg */; };
 		E3C480FE2283982A007B175B /* cassie.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E3C480F72283982A007B175B /* cassie.jpeg */; };
 		E3C4810022839F89007B175B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C480FF22839F89007B175B /* ProfileViewController.swift */; };
-		E3C481042283A523007B175B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E3C481032283A523007B175B /* GoogleService-Info.plist */; };
 		E3C481062283A6DB007B175B /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C481052283A6DA007B175B /* SignInViewController.swift */; };
 		E3C481082283A6EF007B175B /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C481072283A6EF007B175B /* SignUpViewController.swift */; };
 		E3C4810A2283B72D007B175B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C481092283B72D007B175B /* User.swift */; };
@@ -57,6 +58,8 @@
 		1A7A1B62F5E9A32AC40A3E61 /* Pods_RateMe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RateMe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D940C524298C8CA36090925 /* Pods_RateMeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RateMeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		39178CDF461750A161C33AED /* Pods-RateMe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RateMe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RateMe/Pods-RateMe.debug.xcconfig"; sourceTree = "<group>"; };
+		61406051228E53FE00DE319F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		61406055228E72F800DE319F /* ratemelogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ratemelogo.png; sourceTree = "<group>"; };
 		61D7C4F3228CD82600B96449 /* SearchUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUser.swift; sourceTree = "<group>"; };
 		61D7C4F5228CF7CB00B96449 /* NextSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextSignUpViewController.swift; sourceTree = "<group>"; };
 		61FFF1D22288CD720034A883 /* user-silhouette.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-silhouette.png"; sourceTree = "<group>"; };
@@ -85,7 +88,6 @@
 		E3C480F622839829007B175B /* beyonce.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = beyonce.jpeg; sourceTree = "<group>"; };
 		E3C480F72283982A007B175B /* cassie.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cassie.jpeg; sourceTree = "<group>"; };
 		E3C480FF22839F89007B175B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		E3C481032283A523007B175B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E3C481052283A6DA007B175B /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		E3C481072283A6EF007B175B /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		E3C481092283B72D007B175B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			children = (
 				61FFF1D22288CD720034A883 /* user-silhouette.png */,
 				E3C480ED2283905C007B175B /* notavail.jpeg */,
+				61406055228E72F800DE319F /* ratemelogo.png */,
 				E3C4810B2283CF7E007B175B /* default.jpeg */,
 				E3C480F622839829007B175B /* beyonce.jpeg */,
 				E3C480F72283982A007B175B /* cassie.jpeg */,
@@ -133,6 +136,7 @@
 				E3C480F122839828007B175B /* kim.jpeg */,
 				E3C480F522839829007B175B /* lauren.jpeg */,
 				E3C480F322839829007B175B /* rihanna.jpeg */,
+				61406051228E53FE00DE319F /* GoogleService-Info.plist */,
 			);
 			path = image;
 			sourceTree = "<group>";
@@ -188,7 +192,6 @@
 				E3C480C822838D6B007B175B /* LaunchScreen.storyboard */,
 				E3C480CB22838D6B007B175B /* Info.plist */,
 				61FFF1D12288C0DC0034A883 /* image */,
-				E3C481032283A523007B175B /* GoogleService-Info.plist */,
 			);
 			path = RateMe;
 			sourceTree = "<group>";
@@ -332,7 +335,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3C481042283A523007B175B /* GoogleService-Info.plist in Resources */,
+				61406052228E53FE00DE319F /* GoogleService-Info.plist in Resources */,
 				E3C480FC2283982A007B175B /* lauren.jpeg in Resources */,
 				E3C480CA22838D6B007B175B /* LaunchScreen.storyboard in Resources */,
 				E3C480FA2283982A007B175B /* rihanna.jpeg in Resources */,
@@ -340,6 +343,7 @@
 				E3C480C522838D68007B175B /* Main.storyboard in Resources */,
 				E3C480FD2283982A007B175B /* beyonce.jpeg in Resources */,
 				E3C480FB2283982A007B175B /* chantel.jpeg in Resources */,
+				61406056228E72F800DE319F /* ratemelogo.png in Resources */,
 				E3C480EE2283905F007B175B /* notavail.jpeg in Resources */,
 				E3C480F82283982A007B175B /* kim.jpeg in Resources */,
 				E3C4810C2283CF7E007B175B /* default.jpeg in Resources */,
@@ -395,7 +399,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-RateMe/Pods-RateMe-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-RateMe/Pods-RateMe-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
@@ -412,7 +416,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RateMe/Pods-RateMe-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RateMe/Pods-RateMe-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C2A2DCF290A54B361E3D2C4B /* [CP] Check Pods Manifest.lock */ = {
